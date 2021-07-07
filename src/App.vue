@@ -1,23 +1,28 @@
 <template>
 <div class="header">
     <ul class="header-button-left">
-      <li>Cancel</li>
+      <li @click="step--;">Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li>Next</li>
+      <li v-if="step == 1" @click="step++;">Next</li>
+      <li v-if="step == 2" @click="publish()">발행</li>
+
     </ul>
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container :posting="posting"/>
+  <Container @write='write = $event' :posting="posting" :step="step" :image="image"/>
   <button @click="more">더보기</button>
 
   <div class="footer">
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile" />
+      <input @change="upload" accept='image/*' type="file" id="file" class="inputfile" />
+      <!-- input 태그에 multiple 넣으면 파일 여러개 선택가능 -->
       <label for="file" class="input-plus">+</label>
     </ul>
  </div>
+
+
 
 </template>
 
@@ -33,22 +38,45 @@ export default {
     return{
       posting : Posting,
       pushBtn : 0,
+      step : 0,
+      image : '',
+      write : '',
     }
   },
   components: {
     Container,
   },
   methods : {
+    publish(){
+      var myfeed = {
+        name: "Kim Hyun",
+        userImage: "https://placeimg.com/100/100/arch",
+        postImage: this.image,
+        likes: 36,
+        date: "May 15",
+        liked: false,
+        content: this.write,
+        filter: "perpetua"
+      };
+      this.posting.unshift(myfeed);
+      this.step = 0;
+    },
     more(){
       axios.post('URL', {name : 'kim'}).then().catch((err)=>{
         err
       })
 
       axios.get(`https://codingapple1.github.io/vue/more${this.pushBtn}.json`)
-      .then((ending)=>{
+      .then( ending =>{
         this.posting.push(ending.data);
         this.pushBtn++;
       })
+    },
+    upload(e){
+      let files = e.target.files;
+      let url = URL.createObjectURL(files[0]);
+      this.image = url;
+      this.step++;
     }
   }
 }
