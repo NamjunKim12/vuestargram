@@ -1,8 +1,7 @@
 <template>
  <div>
-     <Post :posting="posting[0]"/>
-    <Post :posting="posting[1]"/>
-    <Post :posting="posting[2]"/>
+     <Post :posting="posting[i]" v-for="(data, i) in posting" :key="i"/>
+
 </div>
 </template>
 
