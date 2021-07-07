@@ -1,6 +1,7 @@
 <template>
-  <div :class="filter + ` filter-item`" :style="`background-image:url(${image})`">
+  <div @click="fire" :class="filter + ` filter-item`" :style="`background-image:url(${image})`">
     <slot ></slot>
+
   </div>
 </template>
 
@@ -9,9 +10,13 @@ export default {
     name : 'filterbox',
     date(){
         return{
-            
         }
     },
+    methods : {
+        fire(){
+            this.emitter.emit( 'clickFilter' , this.filter )
+        }
+    }, 
     props : {
         image : String,
         filter : String,

@@ -30,7 +30,6 @@
 
 import Container from "./components/container.vue" 
 import Posting from "./assets/posting.js"
-import axios from 'axios'
 
 export default {
   name: 'App',
@@ -41,32 +40,40 @@ export default {
       step : 0,
       image : '',
       write : '',
+      SelectedFilter : '',
     }
   },
+  mounted(){
+    this.emitter.on( 'clickFilter' , (a) => {
+        this.selectedFilter = a 
+    })
+  },
+
   components: {
     Container,
   },
+
   methods : {
     publish(){
       var myfeed = {
-        name: "Kim Hyun",
+        name: "NJ Kim",
         userImage: "https://placeimg.com/100/100/arch",
         postImage: this.image,
         likes: 36,
         date: "May 15",
         liked: false,
         content: this.write,
-        filter: "perpetua"
+        filter: this.selectedFilter
       };
       this.posting.unshift(myfeed);
       this.step = 0;
     },
     more(){
-      axios.post('URL', {name : 'kim'}).then().catch((err)=>{
+      this.axios.post('URL', {name : 'kim'}).then().catch((err)=>{
         err
       })
 
-      axios.get(`https://codingapple1.github.io/vue/more${this.pushBtn}.json`)
+      this.axios.get(`https://codingapple1.github.io/vue/more${this.pushBtn}.json`)
       .then( ending =>{
         this.posting.push(ending.data);
         this.pushBtn++;
