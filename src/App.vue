@@ -59,9 +59,9 @@ export default {
         name: "NJ Kim",
         userImage: "https://placeimg.com/100/100/arch",
         postImage: this.image,
-        likes: 36,
+        likes: 0,
         date: "May 15",
-        liked: false,
+        liked: this.$store.state.liked,
         content: this.write,
         filter: this.selectedFilter
       };

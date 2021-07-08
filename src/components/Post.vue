@@ -4,9 +4,14 @@
       <div class="profile" :style="{ backgroundImage : `url(${posting.userImage})` }" ></div>
       <span class="profile-name" >{{posting.name}}</span>
     </div>
-    <div :class="posting.filter" class="post-body" :style="{ backgroundImage : `url(${posting.postImage})` }"></div>
+    <div :class="posting.filter" class="post-body" :style="{ backgroundImage : `url(${posting.postImage})` }"  @click="$store.commit('likeButton')"></div>
     <div class="post-content">
-      <p>{{posting.likes}} Likes</p>
+      <p> 
+      <span v-if="$store.state.liked == true" @click="$store.commit('likeButton')" style='cursor: pointer;'>💖</span>
+      <span v-if="$store.state.liked == false" @click="$store.commit('likeButton')" style='cursor: pointer;'>🖤</span>
+
+       {{$store.state.likes}} Likes
+       </p>
       <p><strong>{{posting.name}}</strong> {{posting.content}}</p>
       <p class="date">{{posting.date}}</p>
     </div>
