@@ -11,14 +11,17 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
+  <p>안녕,{{name}}</p>
+
   <Container @write='write = $event' :posting="posting" :step="step" :image="image"/>
-  <button @click="more">더보기</button>
+  <p> {{now}} {{counter}}</p>
+  <button @click="counter++;">더보기 버튼</button>
 
   <div class="footer">
     <ul class="footer-button-plus">
       <input @change="upload" accept='image/*' type="file" id="file" class="inputfile" />
       <!-- input 태그에 multiple 넣으면 파일 여러개 선택가능 -->
-      <label for="file" class="input-plus">+</label>
+      <label for="file" class="input-plus" >+</label>
     </ul>
  </div>
 
@@ -30,6 +33,7 @@
 
 import Container from "./components/container.vue" 
 import Posting from "./assets/posting.js"
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'App',
@@ -41,6 +45,7 @@ export default {
       image : '',
       write : '',
       SelectedFilter : '',
+      counter : 0,
     }
   },
   mounted(){
@@ -53,7 +58,18 @@ export default {
     Container,
   },
 
+  computed : {
+    now(){
+      return new Date()
+    },
+    name(){
+      return this.$store.state.name
+    },
+    ...mapState(['name','age','likes','liked']),
+  },
+
   methods : {
+    ...mapMutations([ 'setMore', 'changeName', 'likeButton' ]),
     publish(){
       var myfeed = {
         name: "NJ Kim",
